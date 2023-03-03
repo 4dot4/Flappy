@@ -46,19 +46,17 @@ func update(game *game) {
 }
 func draw(game *game) {
 	rl.BeginDrawing()
-
 	rl.ClearBackground(rl.GetColor(0x052c46ff))
 	rl.DrawTextureEx(game.background, rl.Vector2{X: game.scrollingBack, Y: 20}, 0, 2.0, rl.White)
 	rl.DrawTextureEx(game.background, rl.Vector2{X: float32(game.background.Width)*2 + game.scrollingBack, Y: 20}, 0, 2.0, rl.White)
-
 	rl.DrawTextureEx(game.midground, rl.Vector2{X: game.scrollingMid, Y: 20}, 0, 2.0, rl.White)
 	rl.DrawTextureEx(game.midground, rl.Vector2{X: float32(game.midground.Width)*2 + game.scrollingMid, Y: 20}, 0, 2.0, rl.White)
-
 	rl.DrawTextureEx(game.foreground, rl.Vector2{X: game.scrollingFore, Y: 70}, 0, 2.0, rl.White)
 	rl.DrawTextureEx(game.foreground, rl.Vector2{X: float32(game.foreground.Width)*2 + game.scrollingFore, Y: 70}, 0, 2.0, rl.White)
 	rl.EndDrawing()
 }
 func (game *game) loadGame() {
+
 	game.fxJump = rl.LoadSound("./sounds/jump.mp3")
 	game.background = rl.LoadTexture("./assets/background.png")
 	game.foreground = rl.LoadTexture("./assets/foreground.png")
@@ -82,7 +80,7 @@ func (game *game) initGame() {
 	game.player = goppy{rl.Vector2{X: 0, Y: 400}}
 }
 func main() {
-
+	//escrevi na branch secundaria
 	var myGame game
 
 	rl.InitWindow(800, 450, "flappy")
