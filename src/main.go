@@ -5,85 +5,60 @@ import (
 )
 
 type goppy struct {
-	coords rl.Vector2
+	Coords rl.Vector2
 }
-type tubes struct {
-	rec    rl.Rectangle
-	color  rl.Color
-	active bool
+type tube struct {
+	Texture rl.Texture2D
+	Color   rl.Color
+	Active  bool
 }
-type game struct {
-	pause         bool
-	over          bool
-	score         int
-	background    rl.Texture2D
-	foreground    rl.Texture2D
-	midground     rl.Texture2D
-	fxJump        rl.Sound
-	fxOver        rl.Music
-	player        goppy
-	scrollingBack float32
-	scrollingMid  float32
-	scrollingFore float32
-	highScore     int
+type Game struct {
+	Pause       bool
+	Over        bool
+	Score       int
+	SpriteSheet rl.Texture2D
+	FxJump      rl.Sound
+	FxOver      rl.Music
+	Player      goppy
+	Tube        tube
+	HighScore   int
 }
 
-func update(game *game) {
-	game.scrollingBack -= 0.1
-	game.scrollingMid -= 0.5
-	game.scrollingFore -= 1
-
-	if game.scrollingBack <= float32(game.background.Width)*2 {
-		game.scrollingBack = 0
-	}
-	if game.scrollingMid <= -float32(game.midground.Width)*2 {
-		game.scrollingMid = 0
-	}
-	if game.scrollingFore <= -float32(game.foreground.Width)*2 {
-		game.scrollingFore = 0
-	}
+func update(Game *Game) {
 
 }
-func draw(game *game) {
+func draw(Game *Game) {
 	rl.BeginDrawing()
 	rl.ClearBackground(rl.GetColor(0x052c46ff))
-	rl.DrawTextureEx(game.background, rl.Vector2{X: game.scrollingBack, Y: 20}, 0, 2.0, rl.White)
-	rl.DrawTextureEx(game.background, rl.Vector2{X: float32(game.background.Width)*2 + game.scrollingBack, Y: 20}, 0, 2.0, rl.White)
-	rl.DrawTextureEx(game.midground, rl.Vector2{X: game.scrollingMid, Y: 20}, 0, 2.0, rl.White)
-	rl.DrawTextureEx(game.midground, rl.Vector2{X: float32(game.midground.Width)*2 + game.scrollingMid, Y: 20}, 0, 2.0, rl.White)
-	rl.DrawTextureEx(game.foreground, rl.Vector2{X: game.scrollingFore, Y: 70}, 0, 2.0, rl.White)
-	rl.DrawTextureEx(game.foreground, rl.Vector2{X: float32(game.foreground.Width)*2 + game.scrollingFore, Y: 70}, 0, 2.0, rl.White)
+	rl.DrawTextureEx(Game.SpriteSheet, rl.Vector2{X: 0, Y: 0}, 0, 3, rl.White)
 	rl.EndDrawing()
 }
-func (game *game) loadGame() {
+func (Game *Game) loadGame() {
 
-	game.fxJump = rl.LoadSound("./sounds/jump.mp3")
-	game.background = rl.LoadTexture("./assets/background.png")
-	game.foreground = rl.LoadTexture("./assets/foreground.png")
-	game.midground = rl.LoadTexture("./assets/midground.png")
-	game.fxOver = rl.LoadMusicStream("./sounds/gameOver.mp3")
+	Game.FxJump = rl.LoadSound("./sounds/jump.mp3")
+	Game.SpriteSheet = rl.LoadTexture("./assets/SpriteSheet.png")
+	Game.FxOver = rl.LoadMusicStream("./sounds/gameOver.mp3")
 
 }
-func (game *game) unloadGame() {
-	rl.UnloadTexture(game.background)
-	rl.UnloadTexture(game.foreground)
-	rl.UnloadTexture(game.midground)
-	rl.UnloadSound(game.fxJump)
-	rl.UnloadMusicStream(game.fxOver)
+func (Game *Game) unloadGame() {
+
+	rl.UnloadSound(Game.FxJump)
+	rl.UnloadMusicStream(Game.FxOver)
 
 }
-func (game *game) initGame() {
+func (Game *Game) initGame() {
 
-	game.over = false
-	game.pause = false
-	game.score = 0
-	game.player = goppy{rl.Vector2{X: 0, Y: 400}}
+	Game.HighScore = 0
+	Game.Over = false
+	Game.Pause = false
+	Game.Score = 0
+
 }
 func main() {
-	//escrevi na branch secundaria
-	var myGame game
 
-	rl.InitWindow(800, 450, "flappy")
+	var myGame Game
+
+	rl.InitWindow(400, 700, "flappy")
 	rl.InitAudioDevice()
 	rl.SetTargetFPS(60)
 
