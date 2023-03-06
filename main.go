@@ -20,8 +20,9 @@ type Circle struct {
 }
 type goppy struct {
 	DestRec      rl.Rectangle
-	FrameRec     rl.Rectangle
+	SourceRec    rl.Rectangle
 	CircleCol    Circle
+	Origin       rl.Vector2
 	Rotation     float32
 	CurrentFrame int
 	FrameSpeed   int
@@ -46,6 +47,11 @@ type Game struct {
 }
 
 func update(Game *Game) {
+
+	Game.Player.CircleCol.Origin = rl.Vector2{
+		X: Game.Player.DestRec.X - 6,
+		Y: Game.Player.DestRec.Y,
+	}
 	Game.Player.FrameCounter++
 	if Game.Player.FrameCounter >= 60/Game.Player.FrameSpeed {
 		Game.Player.FrameCounter = 0
@@ -53,15 +59,32 @@ func update(Game *Game) {
 		if Game.Player.CurrentFrame > 2 {
 			Game.Player.CurrentFrame = 0
 		}
-		Game.Player.FrameRec.X = float32(Game.Player.CurrentFrame) * Game.Player.FrameRec.Width
+		Game.Player.SourceRec.X = float32(Game.Player.CurrentFrame) * Game.Player.SourceRec.Width
 	}
 	Game.Player.Rotation += 1
-	if rl.IsKeyPressed(rl.KeyD) {
-		Game.Player.FrameSpeed++
-	}
-	if rl.IsKeyPressed(rl.KeyA) {
-		Game.Player.FrameSpeed--
-	}
+	//if rl.IsKeyPressed(rl.KeyD) {
+	//Game.Player.FrameSpeed++
+	//	Game.Player.CircleCol.Origin.X += 1
+	//}
+	// if rl.IsKeyPressed(rl.KeyA) {
+	// 	//Game.Player.FrameSpeed--
+	// 	Game.Player.CircleCol.Origin.X -= 1
+	// }
+	// if rl.IsKeyPressed(rl.KeyW) {
+	// 	//Game.Player.FrameSpeed++
+	// 	Game.Player.CircleCol.Origin.Y -= 1
+	// }
+	// if rl.IsKeyPressed(rl.KeyS) {
+	// 	//Game.Player.FrameSpeed--
+	// 	Game.Player.CircleCol.Origin.Y += 1
+	// }
+	// if rl.IsKeyPressed(rl.KeyF) {
+	// 	//Game.Player.FrameSpeed--
+	// 	Game.Player.CircleCol.Radios += 1
+	// }
+	// if rl.IsKeyPressed(rl.KeyG) {
+	// 	Game.Player.CircleCol.Radios -= 1
+	// }
 	if rl.IsKeyDown(rl.KeyDown) {
 		Game.Player.DestRec.Y += 5
 	}
@@ -80,16 +103,24 @@ func draw(Game *Game) {
 	rl.BeginDrawing()
 	rl.ClearBackground(rl.White)
 	//background
-	rl.DrawTexturePro(Game.SpriteSheet,
+	rl.DrawTexturePro(
+		Game.SpriteSheet, //texture
 		rl.Rectangle{X: 0, Y: 0, Width: 143, Height: 255},         //RecSource
 		rl.Rectangle{X: 0, Y: 0, Width: 143 * 4, Height: 255 * 4}, //Destiny
 		rl.Vector2{X: 143 / 2, Y: 255 / 2}, 0, rl.White)           //Origin
 
 	//floppy
-	rl.DrawTexturePro(Game.SpriteSheet, Game.Player.FrameRec, Game.Player.DestRec, rl.Vector2{X: 0, Y: 0}, 0, rl.White)
-
-	rl.DrawRectangleLines(Game.Player.DestRec.ToInt32().X+9, Game.Player.DestRec.ToInt32().Y, Game.Player.DestRec.ToInt32().Width-31, Game.Player.DestRec.ToInt32().Height, rl.Red)
+	rl.DrawTexturePro(
+		Game.SpriteSheet,      //Texture
+		Game.Player.SourceRec, //SourceRec
+		Game.Player.DestRec,   //Destiny
+		Game.Player.Origin,    //Origin
+		Game.Player.Rotation,  //Rotation
+		rl.White)
+	rl.DrawCircleLines(int32(Game.Player.CircleCol.Origin.X), int32(Game.Player.CircleCol.Origin.Y), Game.Player.CircleCol.Radios, rl.Red)
 	rl.DrawText(fmt.Sprintf("X : %2f\nY :%2f", Game.Player.DestRec.X, Game.Player.DestRec.Y), 10, 10, 20, rl.Red)
+	rl.DrawText(fmt.Sprintf("CircleX : %2f\nCircleY :%2f, Radios: %f", Game.Player.CircleCol.Origin.X, Game.Player.CircleCol.Origin.Y, Game.Player.CircleCol.Radios), 10, 60, 20, rl.Red)
+
 	rl.EndDrawing()
 }
 func (Game *Game) loadGame() {
@@ -105,7 +136,7 @@ func (Game *Game) unloadGame() {
 }
 func (Game *Game) initGame() {
 	Game.Player = goppy{
-		FrameRec: rl.Rectangle{
+		SourceRec: rl.Rectangle{
 			X:      0,
 			Y:      491,
 			Width:  28,
@@ -115,10 +146,20 @@ func (Game *Game) initGame() {
 	Game.Player.DestRec = rl.Rectangle{
 		X:      140,
 		Y:      360,
-		Width:  Game.Player.FrameRec.Width * Scale,
-		Height: Game.Player.FrameRec.Height * Scale,
+		Width:  Game.Player.SourceRec.Width * Scale,
+		Height: Game.Player.SourceRec.Height * Scale,
 	}
-
+	Game.Player.Origin = rl.Vector2{
+		X: Game.Player.DestRec.Width / 2,
+		Y: Game.Player.DestRec.Height / 2,
+	}
+	Game.Player.CircleCol = Circle{
+		Origin: rl.Vector2{
+			X: Game.Player.DestRec.X,
+			Y: Game.Player.DestRec.Y,
+		},
+		Radios: 21,
+	}
 	Game.Player.FrameSpeed = 8
 
 	Game.Over = false
