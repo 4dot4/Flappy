@@ -4,6 +4,8 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+//TODO
+
 func (Game *Game) loadGame() {
 
 	Game.SpriteSheet = rl.LoadTexture("./assets/SpriteSheet.png")

@@ -10,7 +10,7 @@ const (
 	Menu Screen = iota
 	Logo
 	Scale        float32 = 3
-	Gravity      float32 = 0.07
+	Gravity      float32 = 0.3
 	ScreenWidth          = 400
 	ScreenHeight         = 700
 )

@@ -4,6 +4,12 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+func jump(player *goppy) {
+
+	player.SpeedY = 0
+	player.SpeedY -= 7
+
+}
 func update(Game *Game) {
 	Game.Foreground.ScrollF -= 2
 	if Game.Foreground.ScrollF <= -Game.Foreground.RecDest.Width {
@@ -23,14 +29,12 @@ func update(Game *Game) {
 		Game.Player.SourceRec.X = float32(Game.Player.CurrentFrame) * Game.Player.SourceRec.Width
 	}
 
-	if Game.Player.CircleCol.Origin.Y+Game.Player.CircleCol.Radios >= ScreenHeight {
-		Game.Player.SpeedY = -Game.Player.SpeedY
+	if Game.Player.CircleCol.Origin.Y+Game.Player.CircleCol.Radios >= Game.Foreground.RecDest.Y {
+		Game.Player.SpeedY = 0
 	} else {
 		Game.Player.SpeedY += Gravity
 	}
-	if Game.Player.CircleCol.Origin.Y-Game.Player.CircleCol.Radios <= 0 {
-		Game.Player.SpeedY = -Game.Player.SpeedY
-	}
+
 	if Game.Player.SpeedY > 0 {
 		if Game.Player.Rotation <= 90 {
 			Game.Player.Rotation += 3
@@ -43,9 +47,7 @@ func update(Game *Game) {
 	}
 	Game.Player.DestRec.Y += Game.Player.SpeedY
 	if rl.IsMouseButtonPressed(rl.MouseLeftButton) || rl.IsKeyPressed(rl.KeySpace) {
-		//Game.Player.FrameSpeed++
-		//Game.Player.CircleCol.Origin.X += 1
-		Game.Player.SpeedY = -Game.Player.SpeedY
+		jump(&Game.Player)
 	}
 	// if rl.IsKeyPressed(rl.KeyA) {
 	// 	//Game.Player.FrameSpeed--
