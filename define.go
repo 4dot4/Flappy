@@ -35,6 +35,11 @@ type tube struct {
 	Color   rl.Color
 	Active  bool
 }
+type Foreground struct {
+	RecSource rl.Rectangle
+	RecDest   rl.Rectangle
+	ScrollF   float32
+}
 type Game struct {
 	Pause       bool
 	Over        bool
@@ -44,6 +49,7 @@ type Game struct {
 	FxOver      rl.Music
 	Player      goppy
 	Tube        tube
+	Foreground  Foreground
 	HighScore   int
 
 	CurrentScreen Screen

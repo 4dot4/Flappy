@@ -18,9 +18,25 @@ func draw(Game *Game) {
 
 	//Foreground
 	rl.DrawTexturePro(
-		Game.SpriteSheet, //texture
-		rl.Rectangle{X: 292, Y: 0, Width: 167, Height: 56},          //RecSource
-		rl.Rectangle{X: 0, Y: 600, Width: ScreenWidth, Height: 200}, //DestRec
+		Game.SpriteSheet,          //texture
+		Game.Foreground.RecSource, //RecSource
+		rl.Rectangle{
+			X:      Game.Foreground.ScrollF,
+			Y:      Game.Foreground.RecDest.Y,
+			Width:  Game.Foreground.RecDest.Width,
+			Height: Game.Foreground.RecDest.Height,
+		}, //DestRec
+		rl.Vector2{X: 0, Y: 0},
+		0, rl.White)
+	rl.DrawTexturePro(
+		Game.SpriteSheet,          //texture
+		Game.Foreground.RecSource, //RecSource
+		rl.Rectangle{
+			X:      Game.Foreground.RecDest.Width + Game.Foreground.ScrollF,
+			Y:      Game.Foreground.RecDest.Y,
+			Width:  Game.Foreground.RecDest.Width,
+			Height: Game.Foreground.RecDest.Height,
+		}, //DestRec
 		rl.Vector2{X: 0, Y: 0},
 		0, rl.White)
 

@@ -5,7 +5,10 @@ import (
 )
 
 func update(Game *Game) {
-
+	Game.Foreground.ScrollF -= 2
+	if Game.Foreground.ScrollF <= -Game.Foreground.RecDest.Width {
+		Game.Foreground.ScrollF = 0
+	}
 	Game.Player.CircleCol.Origin = rl.Vector2{
 		X: Game.Player.DestRec.X - 6,
 		Y: Game.Player.DestRec.Y,

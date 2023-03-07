@@ -41,6 +41,19 @@ func (Game *Game) initGame() {
 		},
 		Radios: 21,
 	}
+	Game.Foreground.RecSource = rl.Rectangle{
+		X:      292,
+		Y:      0,
+		Width:  167,
+		Height: 56,
+	}
+	Game.Foreground.RecDest = rl.Rectangle{
+		X:      0,
+		Y:      570,
+		Width:  ScreenWidth,
+		Height: 200,
+	}
+
 	Game.Player.FrameSpeed = 8
 	Game.Player.SpeedY = 5
 	Game.Over = false
