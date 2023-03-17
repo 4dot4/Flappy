@@ -4,8 +4,6 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-//TODO
-
 func (Game *Game) loadGame() {
 
 	Game.SpriteSheet = rl.LoadTexture("./assets/SpriteSheet.png")
@@ -41,7 +39,7 @@ func (Game *Game) initGame() {
 			X: Game.Player.DestRec.X,
 			Y: Game.Player.DestRec.Y,
 		},
-		Radios: 21,
+		Radios: 20,
 	}
 	Game.Foreground.RecSource = rl.Rectangle{
 		X:      292,
@@ -55,7 +53,16 @@ func (Game *Game) initGame() {
 		Width:  ScreenWidth,
 		Height: 200,
 	}
-
+	Game.UpTube = Tube{
+		Source:  rl.Rectangle{X: 55, Y: 323, Width: 27, Height: 161},
+		DestRec: rl.Rectangle{X: 300, Y: float32(rl.GetRandomValue(-400, -150)), Width: 27 * 3, Height: 3 * 161},
+	}
+	Game.DownTube = Tube{
+		Source: rl.Rectangle{X: 83, Y: 320, Width: 27, Height: 161},
+		DestRec: rl.Rectangle{
+			X: Game.UpTube.DestRec.X,
+			Y: Game.UpTube.DestRec.Y + Game.UpTube.DestRec.Height + 130, Width: 27 * 3, Height: 161 * 3},
+	}
 	Game.Player.FrameSpeed = 8
 	Game.Player.SpeedY = 5
 	Game.Over = false

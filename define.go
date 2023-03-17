@@ -9,11 +9,13 @@ type Screen int
 const (
 	Menu Screen = iota
 	Logo
-	Scale        float32 = 3
-	Gravity      float32 = 0.3
-	ScreenWidth          = 400
-	ScreenHeight         = 700
+	Scale float32 = 3
+
+	ScreenWidth  = 400
+	ScreenHeight = 700
 )
+
+var Gravity float32
 
 type Circle struct {
 	Origin rl.Vector2
@@ -30,10 +32,9 @@ type goppy struct {
 	FrameCounter int
 	SpeedY       float32
 }
-type tube struct {
-	Texture rl.Texture2D
-	Color   rl.Color
-	Active  bool
+type Tube struct {
+	Source  rl.Rectangle
+	DestRec rl.Rectangle
 }
 type Foreground struct {
 	RecSource rl.Rectangle
@@ -41,16 +42,16 @@ type Foreground struct {
 	ScrollF   float32
 }
 type Game struct {
-	Pause       bool
-	Over        bool
-	Score       int
-	SpriteSheet rl.Texture2D
-	FxJump      rl.Sound
-	FxOver      rl.Music
-	Player      goppy
-	Tube        tube
-	Foreground  Foreground
-	HighScore   int
-
+	Pause         bool
+	Over          bool
+	Score         int
+	SpriteSheet   rl.Texture2D
+	FxJump        rl.Sound
+	FxOver        rl.Music
+	Player        goppy
+	UpTube        Tube
+	DownTube      Tube
+	Foreground    Foreground
+	HighScore     int32
 	CurrentScreen Screen
 }

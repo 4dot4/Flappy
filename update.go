@@ -7,8 +7,50 @@ import (
 func jump(player *goppy) {
 
 	player.SpeedY = 0
-	player.SpeedY -= 7
+	player.SpeedY -= 6
 
+}
+func animePlayer(Player *goppy) {
+	Player.FrameCounter++
+	if Player.FrameCounter >= 60/Player.FrameSpeed {
+		Player.FrameCounter = 0
+		Player.CurrentFrame++
+		if Player.CurrentFrame > 2 {
+			Player.CurrentFrame = 0
+		}
+		Player.SourceRec.X = float32(Player.CurrentFrame) * Player.SourceRec.Width
+	}
+}
+func fisica(Game *Game) {
+	if Game.Player.CircleCol.Origin.Y+Game.Player.CircleCol.Radios >= Game.Foreground.RecDest.Y {
+		Game.Player.SpeedY = 0
+	} else {
+		Game.Player.SpeedY += Gravity
+	}
+	if Game.Player.SpeedY > 10 {
+		Game.Player.SpeedY = 10
+	}
+	if Game.Player.Rotation >= 85 {
+		Gravity = 0.3
+	} else {
+		Gravity = 0.2
+	}
+	if Game.Player.SpeedY > 5 {
+		if Game.Player.Rotation <= 90 {
+			Game.Player.Rotation += 7
+		}
+	} else {
+		if Game.Player.Rotation >= -40 {
+			Game.Player.Rotation -= 10
+		}
+	}
+	Game.Player.DestRec.Y += Game.Player.SpeedY
+	if rl.IsMouseButtonPressed(rl.MouseLeftButton) || rl.IsKeyPressed(rl.KeySpace) {
+		jump(&Game.Player)
+		Game.UpTube.DestRec.Y = float32(rl.GetRandomValue(-400, -150))
+		Game.DownTube.DestRec.Y = Game.UpTube.DestRec.Y + Game.UpTube.DestRec.Height + 130
+
+	}
 }
 func update(Game *Game) {
 	Game.Foreground.ScrollF -= 2
@@ -17,38 +59,11 @@ func update(Game *Game) {
 	}
 	Game.Player.CircleCol.Origin = rl.Vector2{
 		X: Game.Player.DestRec.X - 6,
-		Y: Game.Player.DestRec.Y,
-	}
-	Game.Player.FrameCounter++
-	if Game.Player.FrameCounter >= 60/Game.Player.FrameSpeed {
-		Game.Player.FrameCounter = 0
-		Game.Player.CurrentFrame++
-		if Game.Player.CurrentFrame > 2 {
-			Game.Player.CurrentFrame = 0
-		}
-		Game.Player.SourceRec.X = float32(Game.Player.CurrentFrame) * Game.Player.SourceRec.Width
+		Y: Game.Player.DestRec.Y + 2,
 	}
 
-	if Game.Player.CircleCol.Origin.Y+Game.Player.CircleCol.Radios >= Game.Foreground.RecDest.Y {
-		Game.Player.SpeedY = 0
-	} else {
-		Game.Player.SpeedY += Gravity
-	}
-
-	if Game.Player.SpeedY > 0 {
-		if Game.Player.Rotation <= 90 {
-			Game.Player.Rotation += 3
-		}
-	} else {
-		if Game.Player.Rotation >= -50 {
-			Game.Player.Rotation -= 10
-		}
-
-	}
-	Game.Player.DestRec.Y += Game.Player.SpeedY
-	if rl.IsMouseButtonPressed(rl.MouseLeftButton) || rl.IsKeyPressed(rl.KeySpace) {
-		jump(&Game.Player)
-	}
+	animePlayer(&Game.Player)
+	fisica(Game)
 	// if rl.IsKeyPressed(rl.KeyA) {
 	// 	//Game.Player.FrameSpeed--
 	// 	Game.Player.CircleCol.Origin.X -= 1
