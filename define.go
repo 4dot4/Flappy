@@ -25,6 +25,8 @@ type goppy struct {
 	DestRec      rl.Rectangle
 	SourceRec    rl.Rectangle
 	CircleCol    Circle
+	FxJump       rl.Sound
+	FxHit        rl.Sound
 	Origin       rl.Vector2
 	Rotation     float32
 	CurrentFrame int
@@ -42,16 +44,15 @@ type Foreground struct {
 	ScrollF   float32
 }
 type Game struct {
-	Pause         bool
-	Over          bool
-	Score         int
-	SpriteSheet   rl.Texture2D
-	FxJump        rl.Sound
-	FxOver        rl.Music
-	Player        goppy
-	TubePos       [6][2]Tube
-	UpTube        Tube
-	DownTube      Tube
+	Pause       bool
+	Over        bool
+	Score       int
+	SpriteSheet rl.Texture2D
+
+	FxOver  rl.Music
+	Player  goppy
+	TubePos [200][2]Tube
+
 	Foreground    Foreground
 	HighScore     int32
 	CurrentScreen Screen

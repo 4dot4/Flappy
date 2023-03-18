@@ -10,13 +10,11 @@ func (Game *Game) loadGame() {
 
 }
 func (Game *Game) unloadGame() {
-
-	rl.UnloadSound(Game.FxJump)
-	rl.UnloadMusicStream(Game.FxOver)
-
+	rl.UnloadTexture(Game.SpriteSheet)
+	rl.UnloadSound(Game.Player.FxJump)
 }
 func (Game *Game) initGame() {
-	var space = 150
+	var Xspace, Yspace float32 = 220, 130
 	Game.Player = goppy{
 		SourceRec: rl.Rectangle{
 			X:      0,
@@ -54,7 +52,7 @@ func (Game *Game) initGame() {
 		Width:  ScreenWidth,
 		Height: 200,
 	}
-	for i := 0; i < 6; i++ {
+	for i := 0; i < 200; i++ {
 		if i == 0 {
 			Game.TubePos[i][0] = Tube{
 				Source:  rl.Rectangle{X: 55, Y: 323, Width: 27, Height: 161},
@@ -63,7 +61,7 @@ func (Game *Game) initGame() {
 		} else {
 			Game.TubePos[i][0] = Tube{
 				Source: rl.Rectangle{X: 55, Y: 323, Width: 27, Height: 161},
-				DestRec: rl.Rectangle{X: Game.TubePos[i-1][0].DestRec.X + Game.TubePos[i-1][0].DestRec.Width + float32(space),
+				DestRec: rl.Rectangle{X: Game.TubePos[i-1][0].DestRec.X + Game.TubePos[i-1][0].DestRec.Width + Xspace,
 					Y:      float32(rl.GetRandomValue(-400, -150)),
 					Width:  27 * 3,
 					Height: 3 * 161},
@@ -73,7 +71,7 @@ func (Game *Game) initGame() {
 			Source: rl.Rectangle{X: 83, Y: 320, Width: 27, Height: 161},
 			DestRec: rl.Rectangle{
 				X: Game.TubePos[i][0].DestRec.X,
-				Y: Game.TubePos[i][0].DestRec.Y + Game.TubePos[i][0].DestRec.Height + 130, Width: 27 * 3, Height: 161 * 3},
+				Y: Game.TubePos[i][0].DestRec.Y + Game.TubePos[i][0].DestRec.Height + Yspace, Width: 27 * 3, Height: 161 * 3},
 		}
 	}
 
@@ -94,11 +92,14 @@ func main() {
 
 	myGame.loadGame()
 	myGame.initGame()
-
+	myGame.Player.FxJump = rl.LoadSound("./sounds/sfx_wing.wav")
+	myGame.Player.FxHit = rl.LoadSound("./sounds/sfx_hit.wav")
 	for !rl.WindowShouldClose() {
+
 		update(&myGame)
 		draw(&myGame)
 	}
 	myGame.unloadGame()
+	rl.CloseAudioDevice()
 	rl.CloseWindow()
 }

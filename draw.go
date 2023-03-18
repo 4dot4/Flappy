@@ -26,7 +26,7 @@ func draw(Game *Game) {
 		rl.White)
 	//uptube
 
-	for i := 0; i < 6; i++ {
+	for i := 0; i < len(Game.TubePos); i++ {
 		for d := 0; d < 2; d++ {
 			rl.DrawTexturePro(
 				Game.SpriteSheet,

@@ -6,8 +6,9 @@ import (
 
 func jump(player *goppy) {
 
+	rl.PlaySound(player.FxJump)
 	player.SpeedY = 0
-	player.SpeedY -= 6
+	player.SpeedY -= 5.5
 
 }
 func animePlayer(Player *goppy) {
@@ -20,6 +21,9 @@ func animePlayer(Player *goppy) {
 		}
 		Player.SourceRec.X = float32(Player.CurrentFrame) * Player.SourceRec.Width
 	}
+}
+func rewrite(TubePos [][]Tube) {
+
 }
 func fisica(Game *Game) {
 	if Game.Player.CircleCol.Origin.Y+Game.Player.CircleCol.Radios >= Game.Foreground.RecDest.Y {
@@ -45,10 +49,21 @@ func fisica(Game *Game) {
 		}
 	}
 	Game.Player.DestRec.Y += Game.Player.SpeedY
+
+	for i := 0; i < len(Game.TubePos); i++ {
+		for d := 0; d < 2; d++ {
+			if Game.Player.CircleCol.Origin.X+Game.Player.CircleCol.Radios >= Game.TubePos[i][d].DestRec.X &&
+				Game.Player.CircleCol.Origin.X-Game.Player.CircleCol.Radios <= Game.TubePos[i][d].DestRec.X+Game.TubePos[i][d].DestRec.Width &&
+				Game.Player.CircleCol.Origin.Y+Game.Player.CircleCol.Radios >= Game.TubePos[i][d].DestRec.Y &&
+				Game.Player.CircleCol.Origin.Y-Game.Player.CircleCol.Radios <= Game.TubePos[i][d].DestRec.Y+Game.TubePos[i][d].DestRec.Height {
+				rl.PlaySound(Game.Player.FxHit)
+			}
+			
+		}
+	}
+
 	if rl.IsMouseButtonPressed(rl.MouseLeftButton) || rl.IsKeyPressed(rl.KeySpace) {
 		jump(&Game.Player)
-		Game.TubePos[0][0].DestRec.Y = float32(rl.GetRandomValue(-400, -150))
-		Game.TubePos[0][1].DestRec.Y = Game.TubePos[0][0].DestRec.Y + Game.TubePos[0][0].DestRec.Height + 130
 
 	}
 }
@@ -61,7 +76,7 @@ func update(Game *Game) {
 		X: Game.Player.DestRec.X - 6,
 		Y: Game.Player.DestRec.Y + 2,
 	}
-	for i := 0; i < 6; i++ {
+	for i := 0; i < len(Game.TubePos); i++ {
 		Game.TubePos[i][0].DestRec.X -= 3
 		Game.TubePos[i][1].DestRec.X = Game.TubePos[i][0].DestRec.X
 	}
@@ -88,6 +103,7 @@ func update(Game *Game) {
 	// 	Game.Player.CircleCol.Radios -= 1
 	// }
 	if rl.IsKeyDown(rl.KeyDown) {
+
 		Game.Player.DestRec.Y += 5
 	}
 	if rl.IsKeyDown(rl.KeyUp) {
