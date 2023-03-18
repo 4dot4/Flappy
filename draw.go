@@ -24,17 +24,17 @@ func draw(Game *Game) {
 		Game.Player.Origin,    //Origin
 		Game.Player.Rotation,  //Rotation
 		rl.White)
-	rl.DrawTexturePro(
-		Game.SpriteSheet,
-		Game.UpTube.Source,
-		Game.UpTube.DestRec,
-		rl.Vector2{X: 0, Y: 0}, 0, rl.RayWhite)
+	//uptube
 
-	rl.DrawTexturePro(
-		Game.SpriteSheet,
-		Game.DownTube.Source,
-		Game.DownTube.DestRec,
-		rl.Vector2{X: 0, Y: 0}, 0, rl.RayWhite)
+	for i := 0; i < 6; i++ {
+		for d := 0; d < 2; d++ {
+			rl.DrawTexturePro(
+				Game.SpriteSheet,
+				Game.TubePos[i][d].Source,
+				Game.TubePos[i][d].DestRec,
+				rl.Vector2{X: 0, Y: 0}, 0, rl.RayWhite)
+		}
+	}
 	//Foreground
 	rl.DrawTexturePro(
 		Game.SpriteSheet,          //texture

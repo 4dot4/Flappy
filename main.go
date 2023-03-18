@@ -16,6 +16,7 @@ func (Game *Game) unloadGame() {
 
 }
 func (Game *Game) initGame() {
+	var space = 150
 	Game.Player = goppy{
 		SourceRec: rl.Rectangle{
 			X:      0,
@@ -53,16 +54,29 @@ func (Game *Game) initGame() {
 		Width:  ScreenWidth,
 		Height: 200,
 	}
-	Game.UpTube = Tube{
-		Source:  rl.Rectangle{X: 55, Y: 323, Width: 27, Height: 161},
-		DestRec: rl.Rectangle{X: 300, Y: float32(rl.GetRandomValue(-400, -150)), Width: 27 * 3, Height: 3 * 161},
+	for i := 0; i < 6; i++ {
+		if i == 0 {
+			Game.TubePos[i][0] = Tube{
+				Source:  rl.Rectangle{X: 55, Y: 323, Width: 27, Height: 161},
+				DestRec: rl.Rectangle{X: 300, Y: float32(rl.GetRandomValue(-400, -150)), Width: 27 * 3, Height: 3 * 161},
+			}
+		} else {
+			Game.TubePos[i][0] = Tube{
+				Source: rl.Rectangle{X: 55, Y: 323, Width: 27, Height: 161},
+				DestRec: rl.Rectangle{X: Game.TubePos[i-1][0].DestRec.X + Game.TubePos[i-1][0].DestRec.Width + float32(space),
+					Y:      float32(rl.GetRandomValue(-400, -150)),
+					Width:  27 * 3,
+					Height: 3 * 161},
+			}
+		}
+		Game.TubePos[i][1] = Tube{
+			Source: rl.Rectangle{X: 83, Y: 320, Width: 27, Height: 161},
+			DestRec: rl.Rectangle{
+				X: Game.TubePos[i][0].DestRec.X,
+				Y: Game.TubePos[i][0].DestRec.Y + Game.TubePos[i][0].DestRec.Height + 130, Width: 27 * 3, Height: 161 * 3},
+		}
 	}
-	Game.DownTube = Tube{
-		Source: rl.Rectangle{X: 83, Y: 320, Width: 27, Height: 161},
-		DestRec: rl.Rectangle{
-			X: Game.UpTube.DestRec.X,
-			Y: Game.UpTube.DestRec.Y + Game.UpTube.DestRec.Height + 130, Width: 27 * 3, Height: 161 * 3},
-	}
+
 	Game.Player.FrameSpeed = 8
 	Game.Player.SpeedY = 5
 	Game.Over = false

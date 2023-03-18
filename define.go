@@ -49,6 +49,7 @@ type Game struct {
 	FxJump        rl.Sound
 	FxOver        rl.Music
 	Player        goppy
+	TubePos       [6][2]Tube
 	UpTube        Tube
 	DownTube      Tube
 	Foreground    Foreground

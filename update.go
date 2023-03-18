@@ -47,8 +47,8 @@ func fisica(Game *Game) {
 	Game.Player.DestRec.Y += Game.Player.SpeedY
 	if rl.IsMouseButtonPressed(rl.MouseLeftButton) || rl.IsKeyPressed(rl.KeySpace) {
 		jump(&Game.Player)
-		Game.UpTube.DestRec.Y = float32(rl.GetRandomValue(-400, -150))
-		Game.DownTube.DestRec.Y = Game.UpTube.DestRec.Y + Game.UpTube.DestRec.Height + 130
+		Game.TubePos[0][0].DestRec.Y = float32(rl.GetRandomValue(-400, -150))
+		Game.TubePos[0][1].DestRec.Y = Game.TubePos[0][0].DestRec.Y + Game.TubePos[0][0].DestRec.Height + 130
 
 	}
 }
@@ -60,6 +60,10 @@ func update(Game *Game) {
 	Game.Player.CircleCol.Origin = rl.Vector2{
 		X: Game.Player.DestRec.X - 6,
 		Y: Game.Player.DestRec.Y + 2,
+	}
+	for i := 0; i < 6; i++ {
+		Game.TubePos[i][0].DestRec.X -= 3
+		Game.TubePos[i][1].DestRec.X = Game.TubePos[i][0].DestRec.X
 	}
 
 	animePlayer(&Game.Player)
