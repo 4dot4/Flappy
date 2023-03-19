@@ -1,9 +1,39 @@
 package main
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	"fmt"
 
-func (Game *Game) initGame() {
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
+
+func startTubes(TubePos *[200][2]Tube) {
 	var Xspace, Yspace float32 = 220, 130
+	for i := 0; i < 200; i++ {
+		if i == 0 {
+			TubePos[i][0] = Tube{
+				Source:  rl.Rectangle{X: 55, Y: 323, Width: 27, Height: 161},
+				DestRec: rl.Rectangle{X: 300, Y: float32(rl.GetRandomValue(-400, -150)), Width: 27 * 3, Height: 3 * 161},
+			}
+		} else {
+			TubePos[i][0] = Tube{
+				Source: rl.Rectangle{X: 55, Y: 323, Width: 27, Height: 161},
+				DestRec: rl.Rectangle{X: TubePos[i-1][0].DestRec.X + TubePos[i-1][0].DestRec.Width + Xspace,
+					Y:      float32(rl.GetRandomValue(-400, -150)),
+					Width:  27 * 3,
+					Height: 3 * 161},
+			}
+		}
+		TubePos[i][1] = Tube{
+			Source: rl.Rectangle{X: 83, Y: 320, Width: 27, Height: 161},
+			DestRec: rl.Rectangle{
+				X: TubePos[i][0].DestRec.X,
+				Y: TubePos[i][0].DestRec.Y + TubePos[i][0].DestRec.Height + Yspace, Width: 27 * 3, Height: 161 * 3},
+		}
+	}
+	fmt.Println(TubePos)
+}
+func (Game *Game) initGame() {
+
 	Game.Player = goppy{
 		SourceRec: rl.Rectangle{
 			X:      0,
@@ -41,28 +71,7 @@ func (Game *Game) initGame() {
 		Width:  ScreenWidth,
 		Height: 200,
 	}
-	for i := 0; i < 200; i++ {
-		if i == 0 {
-			Game.TubePos[i][0] = Tube{
-				Source:  rl.Rectangle{X: 55, Y: 323, Width: 27, Height: 161},
-				DestRec: rl.Rectangle{X: 300, Y: float32(rl.GetRandomValue(-400, -150)), Width: 27 * 3, Height: 3 * 161},
-			}
-		} else {
-			Game.TubePos[i][0] = Tube{
-				Source: rl.Rectangle{X: 55, Y: 323, Width: 27, Height: 161},
-				DestRec: rl.Rectangle{X: Game.TubePos[i-1][0].DestRec.X + Game.TubePos[i-1][0].DestRec.Width + Xspace,
-					Y:      float32(rl.GetRandomValue(-400, -150)),
-					Width:  27 * 3,
-					Height: 3 * 161},
-			}
-		}
-		Game.TubePos[i][1] = Tube{
-			Source: rl.Rectangle{X: 83, Y: 320, Width: 27, Height: 161},
-			DestRec: rl.Rectangle{
-				X: Game.TubePos[i][0].DestRec.X,
-				Y: Game.TubePos[i][0].DestRec.Y + Game.TubePos[i][0].DestRec.Height + Yspace, Width: 27 * 3, Height: 161 * 3},
-		}
-	}
+	startTubes(&Game.TubePos)
 
 	Game.Player.FrameSpeed = 8
 	Game.Player.SpeedY = 5

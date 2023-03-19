@@ -22,8 +22,10 @@ func animePlayer(Player *goppy) {
 		Player.SourceRec.X = float32(Player.CurrentFrame) * Player.SourceRec.Width
 	}
 }
-func rewrite(TubePos [][]Tube) {
+func rewrite(Game *Game) {
+	if Game.Score == len(Game.TubePos) {
 
+	}
 }
 func playerMov(Game *Game) {
 	if Game.Player.CircleCol.Origin.Y+Game.Player.CircleCol.Radios >= Game.Foreground.RecDest.Y {
