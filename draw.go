@@ -61,8 +61,7 @@ func draw(Game *Game) {
 
 	rl.DrawCircleLines(int32(Game.Player.CircleCol.Origin.X), int32(Game.Player.CircleCol.Origin.Y), Game.Player.CircleCol.Radios, rl.Red) //physics
 	rl.DrawCircle(int32(Game.Player.CircleCol.Origin.X), int32(Game.Player.CircleCol.Origin.Y), 5, rl.Red)
-	rl.DrawText(fmt.Sprintf("X : %2f\nY :%2f", Game.Player.DestRec.X, Game.Player.DestRec.Y), 10, 10, 20, rl.Red)
+	rl.DrawText(fmt.Sprintf("Score %d", Game.Score), 10, 10, 20, rl.Red)
 	rl.DrawText(fmt.Sprintf("Velocity: %f \nGravity:%f", Game.Player.SpeedY, Gravity), 10, 60, 20, rl.Red)
-
 	rl.EndDrawing()
 }

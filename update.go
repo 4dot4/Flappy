@@ -57,8 +57,12 @@ func fisica(Game *Game) {
 				Game.Player.CircleCol.Origin.Y+Game.Player.CircleCol.Radios >= Game.TubePos[i][d].DestRec.Y &&
 				Game.Player.CircleCol.Origin.Y-Game.Player.CircleCol.Radios <= Game.TubePos[i][d].DestRec.Y+Game.TubePos[i][d].DestRec.Height {
 				rl.PlaySound(Game.Player.FxHit)
+				Game.Over = true
 			}
-			
+			if Game.TubePos[i][d].DestRec.X+Game.TubePos[i][d].DestRec.Width < Game.Player.CircleCol.Origin.X+Game.Player.CircleCol.Radios {
+				Game.Score = i + 1
+			}
+
 		}
 	}
 
@@ -68,21 +72,25 @@ func fisica(Game *Game) {
 	}
 }
 func update(Game *Game) {
-	Game.Foreground.ScrollF -= 2
-	if Game.Foreground.ScrollF <= -Game.Foreground.RecDest.Width {
-		Game.Foreground.ScrollF = 0
-	}
-	Game.Player.CircleCol.Origin = rl.Vector2{
-		X: Game.Player.DestRec.X - 6,
-		Y: Game.Player.DestRec.Y + 2,
-	}
-	for i := 0; i < len(Game.TubePos); i++ {
-		Game.TubePos[i][0].DestRec.X -= 3
-		Game.TubePos[i][1].DestRec.X = Game.TubePos[i][0].DestRec.X
-	}
 
 	animePlayer(&Game.Player)
-	fisica(Game)
+	if !Game.Over {
+
+		Game.Foreground.ScrollF -= 2
+		if Game.Foreground.ScrollF <= -Game.Foreground.RecDest.Width {
+			Game.Foreground.ScrollF = 0
+		}
+		Game.Player.CircleCol.Origin = rl.Vector2{
+			X: Game.Player.DestRec.X - 6,
+			Y: Game.Player.DestRec.Y + 2,
+		}
+
+		for i := 0; i < len(Game.TubePos); i++ {
+			Game.TubePos[i][0].DestRec.X -= 3
+			Game.TubePos[i][1].DestRec.X = Game.TubePos[i][0].DestRec.X
+		}
+		fisica(Game)
+	}
 	// if rl.IsKeyPressed(rl.KeyA) {
 	// 	//Game.Player.FrameSpeed--
 	// 	Game.Player.CircleCol.Origin.X -= 1
