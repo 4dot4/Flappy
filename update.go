@@ -25,7 +25,7 @@ func animePlayer(Player *goppy) {
 func rewrite(TubePos [][]Tube) {
 
 }
-func fisica(Game *Game) {
+func playerMov(Game *Game) {
 	if Game.Player.CircleCol.Origin.Y+Game.Player.CircleCol.Radios >= Game.Foreground.RecDest.Y {
 		Game.Player.SpeedY = 0
 	} else {
@@ -49,6 +49,8 @@ func fisica(Game *Game) {
 		}
 	}
 	Game.Player.DestRec.Y += Game.Player.SpeedY
+}
+func fisica(Game *Game) {
 
 	for i := 0; i < len(Game.TubePos); i++ {
 		for d := 0; d < 2; d++ {
@@ -74,15 +76,16 @@ func fisica(Game *Game) {
 func update(Game *Game) {
 
 	animePlayer(&Game.Player)
+	playerMov(Game)
+	Game.Player.CircleCol.Origin = rl.Vector2{
+		X: Game.Player.DestRec.X - 6,
+		Y: Game.Player.DestRec.Y + 2,
+	}
 	if !Game.Over {
 
 		Game.Foreground.ScrollF -= 2
 		if Game.Foreground.ScrollF <= -Game.Foreground.RecDest.Width {
 			Game.Foreground.ScrollF = 0
-		}
-		Game.Player.CircleCol.Origin = rl.Vector2{
-			X: Game.Player.DestRec.X - 6,
-			Y: Game.Player.DestRec.Y + 2,
 		}
 
 		for i := 0; i < len(Game.TubePos); i++ {
@@ -91,37 +94,19 @@ func update(Game *Game) {
 		}
 		fisica(Game)
 	}
-	// if rl.IsKeyPressed(rl.KeyA) {
-	// 	//Game.Player.FrameSpeed--
-	// 	Game.Player.CircleCol.Origin.X -= 1
-	// }
-	// if rl.IsKeyPressed(rl.KeyW) {
-	// 	//Game.Player.FrameSpeed++
-	// 	Game.Player.CircleCol.Origin.Y -= 1
-	// }
-	// if rl.IsKeyPressed(rl.KeyS) {
-	// 	//Game.Player.FrameSpeed--
-	// 	Game.Player.CircleCol.Origin.Y += 1
-	// }
-	// if rl.IsKeyPressed(rl.KeyF) {
-	// 	//Game.Player.FrameSpeed--
-	// 	Game.Player.CircleCol.Radios += 1
-	// }
-	// if rl.IsKeyPressed(rl.KeyG) {
-	// 	Game.Player.CircleCol.Radios -= 1
-	// }
-	if rl.IsKeyDown(rl.KeyDown) {
 
-		Game.Player.DestRec.Y += 5
-	}
-	if rl.IsKeyDown(rl.KeyUp) {
-		Game.Player.DestRec.Y -= 5
-	}
-	if rl.IsKeyDown(rl.KeyRight) {
-		Game.Player.DestRec.X += 5
-	}
-	if rl.IsKeyDown(rl.KeyLeft) {
-		Game.Player.DestRec.X -= 5
-	}
+	// if rl.IsKeyDown(rl.KeyDown) {
+
+	// 	Game.Player.DestRec.Y += 5
+	// }
+	// if rl.IsKeyDown(rl.KeyUp) {
+	// 	Game.Player.DestRec.Y -= 5
+	// }
+	// if rl.IsKeyDown(rl.KeyRight) {
+	// 	Game.Player.DestRec.X += 5
+	// }
+	// if rl.IsKeyDown(rl.KeyLeft) {
+	// 	Game.Player.DestRec.X -= 5
+	// }
 
 }
