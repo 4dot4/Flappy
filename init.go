@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -12,7 +10,7 @@ func startTubes(TubePos *[200][2]Tube) {
 		if i == 0 {
 			TubePos[i][0] = Tube{
 				Source:  rl.Rectangle{X: 55, Y: 323, Width: 27, Height: 161},
-				DestRec: rl.Rectangle{X: 300, Y: float32(rl.GetRandomValue(-400, -150)), Width: 27 * 3, Height: 3 * 161},
+				DestRec: rl.Rectangle{X: 850, Y: float32(rl.GetRandomValue(-400, -150)), Width: 27 * 3, Height: 3 * 161},
 			}
 		} else {
 			TubePos[i][0] = Tube{
@@ -30,7 +28,7 @@ func startTubes(TubePos *[200][2]Tube) {
 				Y: TubePos[i][0].DestRec.Y + TubePos[i][0].DestRec.Height + Yspace, Width: 27 * 3, Height: 161 * 3},
 		}
 	}
-	fmt.Println(TubePos)
+
 }
 func (Game *Game) initGame() {
 
@@ -57,7 +55,7 @@ func (Game *Game) initGame() {
 			X: Game.Player.DestRec.X,
 			Y: Game.Player.DestRec.Y,
 		},
-		Radios: 20,
+		Radios: 17,
 	}
 	Game.Foreground.RecSource = rl.Rectangle{
 		X:      292,
@@ -72,11 +70,9 @@ func (Game *Game) initGame() {
 		Height: 200,
 	}
 	startTubes(&Game.TubePos)
-
 	Game.Player.FrameSpeed = 8
 	Game.Player.SpeedY = 5
 	Game.Over = false
 	Game.Pause = false
 	Game.Score = 0
-
 }

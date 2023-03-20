@@ -16,6 +16,8 @@ func main() {
 	myGame.SpriteSheet = rl.LoadTexture("./assets/SpriteSheet.png")
 	myGame.Player.FxJump = rl.LoadSound("./sounds/sfx_wing.wav")
 	myGame.Player.FxHit = rl.LoadSound("./sounds/sfx_hit.wav")
+	myGame.FxScore = rl.LoadSound("./sounds/sfx_point.wav")
+
 	for !rl.WindowShouldClose() {
 
 		update(&myGame)
@@ -23,6 +25,8 @@ func main() {
 	}
 	rl.UnloadTexture(myGame.SpriteSheet)
 	rl.UnloadSound(myGame.Player.FxJump)
+	rl.UnloadSound(myGame.Player.FxHit)
+	rl.UnloadSound(myGame.FxScore)
 	rl.CloseAudioDevice()
 	rl.CloseWindow()
 }

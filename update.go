@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -13,6 +15,7 @@ func jump(player *goppy) {
 }
 func animePlayer(Player *goppy) {
 	Player.FrameCounter++
+
 	if Player.FrameCounter >= 60/Player.FrameSpeed {
 		Player.FrameCounter = 0
 		Player.CurrentFrame++
@@ -22,11 +25,7 @@ func animePlayer(Player *goppy) {
 		Player.SourceRec.X = float32(Player.CurrentFrame) * Player.SourceRec.Width
 	}
 }
-func rewrite(Game *Game) {
-	if Game.Score == len(Game.TubePos) {
 
-	}
-}
 func playerMov(Game *Game) {
 	if Game.Player.CircleCol.Origin.Y+Game.Player.CircleCol.Radios >= Game.Foreground.RecDest.Y {
 		Game.Player.SpeedY = 0
@@ -42,11 +41,11 @@ func playerMov(Game *Game) {
 		Gravity = 0.2
 	}
 	if Game.Player.SpeedY > 5 {
-		if Game.Player.Rotation <= 90 {
+		if Game.Player.Rotation <= 90 { 
 			Game.Player.Rotation += 7
 		}
 	} else {
-		if Game.Player.Rotation >= -40 {
+		if Game.Player.Rotation >= -30 {
 			Game.Player.Rotation -= 10
 		}
 	}
@@ -69,7 +68,10 @@ func fisica(Game *Game) {
 
 		}
 	}
-
+	if PastScore != Game.Score {
+		PastScore = Game.Score
+		rl.PlaySound(Game.FxScore)
+	}
 	if rl.IsMouseButtonPressed(rl.MouseLeftButton) || rl.IsKeyPressed(rl.KeySpace) {
 		jump(&Game.Player)
 
@@ -78,14 +80,17 @@ func fisica(Game *Game) {
 func update(Game *Game) {
 
 	animePlayer(&Game.Player)
-	playerMov(Game)
+	if !DebugMode {
+		playerMov(Game)
+	}
+
 	Game.Player.CircleCol.Origin = rl.Vector2{
 		X: Game.Player.DestRec.X - 6,
 		Y: Game.Player.DestRec.Y + 2,
 	}
 	if !Game.Over {
 
-		Game.Foreground.ScrollF -= 2
+		Game.Foreground.ScrollF -= 3
 		if Game.Foreground.ScrollF <= -Game.Foreground.RecDest.Width {
 			Game.Foreground.ScrollF = 0
 		}
@@ -97,18 +102,30 @@ func update(Game *Game) {
 		fisica(Game)
 	}
 
-	// if rl.IsKeyDown(rl.KeyDown) {
+	if rl.IsKeyDown(rl.KeyDown) {
 
-	// 	Game.Player.DestRec.Y += 5
-	// }
-	// if rl.IsKeyDown(rl.KeyUp) {
-	// 	Game.Player.DestRec.Y -= 5
-	// }
-	// if rl.IsKeyDown(rl.KeyRight) {
-	// 	Game.Player.DestRec.X += 5
-	// }
-	// if rl.IsKeyDown(rl.KeyLeft) {
-	// 	Game.Player.DestRec.X -= 5
-	// }
+		Game.Player.DestRec.Y += 5
+	}
+	if rl.IsKeyDown(rl.KeyUp) {
+		Game.Player.DestRec.Y -= 5
+	}
+	if rl.IsKeyDown(rl.KeyRight) {
+		Game.Player.DestRec.X += 5
+	}
+	if rl.IsKeyDown(rl.KeyLeft) {
+		Game.Player.DestRec.X -= 5
+	}
+	if rl.IsKeyPressed(rl.KeyZ) {
+		Game.Player.CircleCol.Radios += 1
+		fmt.Println(Game.Player.CircleCol.Radios)
+	}
+	if rl.IsKeyPressed(rl.KeyX) {
+		Game.Player.CircleCol.Radios -= 1
+		fmt.Println(Game.Player.CircleCol.Radios)
+	}
+	if rl.IsKeyDown(rl.KeyT) {
+		DebugMode = true
+
+	}
 
 }

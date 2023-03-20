@@ -16,6 +16,8 @@ const (
 )
 
 var Gravity float32
+var DebugMode bool
+var PastScore int = 0
 
 type Circle struct {
 	Origin rl.Vector2
@@ -50,6 +52,7 @@ type Game struct {
 	SpriteSheet rl.Texture2D
 
 	FxOver  rl.Music
+	FxScore rl.Sound
 	Player  goppy
 	TubePos [200][2]Tube
 
