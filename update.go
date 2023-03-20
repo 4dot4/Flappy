@@ -6,6 +6,41 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+var bigger int = -1
+
+func tubesCol(Game *Game) {
+
+	for i := 0; i < len(Game.TubePos); i++ {
+		for d := 0; d < 2; d++ {
+			if Game.Player.CircleCol.Origin.X+Game.Player.CircleCol.Radios >= Game.TubePos[i][d].DestRec.X &&
+				Game.Player.CircleCol.Origin.X-Game.Player.CircleCol.Radios <= Game.TubePos[i][d].DestRec.X+Game.TubePos[i][d].DestRec.Width &&
+				Game.Player.CircleCol.Origin.Y+Game.Player.CircleCol.Radios >= Game.TubePos[i][d].DestRec.Y &&
+				Game.Player.CircleCol.Origin.Y-Game.Player.CircleCol.Radios <= Game.TubePos[i][d].DestRec.Y+Game.TubePos[i][d].DestRec.Height {
+				rl.PlaySound(Game.Player.FxHit)
+				Game.Over = true
+			}
+			if Game.TubePos[i][d].DestRec.X+Game.TubePos[i][d].DestRec.Width < Game.Player.CircleCol.Origin.X+Game.Player.CircleCol.Radios {
+				Game.Score = i + 1
+			}
+			if Game.TubePos[i][d].DestRec.X+Game.TubePos[i][d].DestRec.Width < 0 {
+				if bigger == -1 {
+					Game.TubePos[i][d].DestRec.X = Game.TubePos[len(Game.TubePos)-1][0].DestRec.X +
+						Game.TubePos[i][d].DestRec.Width + Xspace
+
+					bigger = 0
+				} else {
+					Game.TubePos[i][d].DestRec.X = Game.TubePos[bigger][0].DestRec.X +
+						Game.TubePos[i][d].DestRec.Width + Xspace
+					Game.TubePos[i][0].DestRec.Y = float32(rl.GetRandomValue(-400, -150))
+
+					bigger = i
+				}
+				Game.TubePos[i][1].DestRec.Y = Game.TubePos[i][0].DestRec.Y + Game.TubePos[i][0].DestRec.Height + Yspace
+			}
+		}
+	}
+
+}
 func jump(player *goppy) {
 
 	rl.PlaySound(player.FxJump)
@@ -41,7 +76,7 @@ func playerMov(Game *Game) {
 		Gravity = 0.2
 	}
 	if Game.Player.SpeedY > 5 {
-		if Game.Player.Rotation <= 90 { 
+		if Game.Player.Rotation <= 90 {
 			Game.Player.Rotation += 7
 		}
 	} else {
@@ -53,21 +88,7 @@ func playerMov(Game *Game) {
 }
 func fisica(Game *Game) {
 
-	for i := 0; i < len(Game.TubePos); i++ {
-		for d := 0; d < 2; d++ {
-			if Game.Player.CircleCol.Origin.X+Game.Player.CircleCol.Radios >= Game.TubePos[i][d].DestRec.X &&
-				Game.Player.CircleCol.Origin.X-Game.Player.CircleCol.Radios <= Game.TubePos[i][d].DestRec.X+Game.TubePos[i][d].DestRec.Width &&
-				Game.Player.CircleCol.Origin.Y+Game.Player.CircleCol.Radios >= Game.TubePos[i][d].DestRec.Y &&
-				Game.Player.CircleCol.Origin.Y-Game.Player.CircleCol.Radios <= Game.TubePos[i][d].DestRec.Y+Game.TubePos[i][d].DestRec.Height {
-				rl.PlaySound(Game.Player.FxHit)
-				Game.Over = true
-			}
-			if Game.TubePos[i][d].DestRec.X+Game.TubePos[i][d].DestRec.Width < Game.Player.CircleCol.Origin.X+Game.Player.CircleCol.Radios {
-				Game.Score = i + 1
-			}
-
-		}
-	}
+	tubesCol(Game)
 	if PastScore != Game.Score {
 		PastScore = Game.Score
 		rl.PlaySound(Game.FxScore)

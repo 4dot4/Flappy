@@ -9,10 +9,10 @@ type Screen int
 const (
 	Menu Screen = iota
 	Logo
-	Scale float32 = 3
-
-	ScreenWidth  = 400
-	ScreenHeight = 700
+	Scale          float32 = 3
+	Xspace, Yspace float32 = 220, 130
+	ScreenWidth            = 400
+	ScreenHeight           = 700
 )
 
 var Gravity float32
@@ -54,7 +54,7 @@ type Game struct {
 	FxOver  rl.Music
 	FxScore rl.Sound
 	Player  goppy
-	TubePos [200][2]Tube
+	TubePos [5][2]Tube
 
 	Foreground    Foreground
 	HighScore     int32

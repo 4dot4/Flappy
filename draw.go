@@ -16,8 +16,9 @@ func draw(Game *Game) {
 		rl.Rectangle{X: 0, Y: 0, Width: 143 * 3.5, Height: 255 * 3.5}, //Destiny
 		rl.Vector2{X: 143 / 2, Y: 255 / 2}, 0, rl.White)               //Origin
 
-	//uptube
-
+	//score
+	rl.DrawText(fmt.Sprintf("%d", Game.Score), 180, 200, 50, rl.White)
+	//tubes
 	for i := 0; i < len(Game.TubePos); i++ {
 		for d := 0; d < 2; d++ {
 			rl.DrawTexturePro(
@@ -27,6 +28,7 @@ func draw(Game *Game) {
 				rl.Vector2{X: 0, Y: 0}, 0, rl.RayWhite)
 		}
 	}
+
 	//Foreground
 	rl.DrawTexturePro(
 		Game.SpriteSheet,          //texture
@@ -60,8 +62,8 @@ func draw(Game *Game) {
 		rl.White)
 	// rl.DrawCircleLines(int32(Game.Player.CircleCol.Origin.X), int32(Game.Player.CircleCol.Origin.Y), Game.Player.CircleCol.Radios, rl.Red) //physics
 	// rl.DrawCircle(int32(Game.Player.CircleCol.Origin.X), int32(Game.Player.CircleCol.Origin.Y), 5, rl.Red)
-	rl.DrawText(fmt.Sprintf("Score %d", Game.Score), 10, 10, 20, rl.Red)
-	rl.DrawFPS(300, 20)
-	rl.DrawText(fmt.Sprintf("Velocity: %f \nGravity:%f", Game.Player.SpeedY, Gravity), 10, 60, 20, rl.Red)
+
+	// rl.DrawFPS(300, 20)
+	// rl.DrawText(fmt.Sprintf("Velocity: %f \nGravity:%f", Game.Player.SpeedY, Gravity), 10, 60, 20, rl.Red)
 	rl.EndDrawing()
 }

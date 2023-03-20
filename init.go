@@ -4,9 +4,9 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func startTubes(TubePos *[200][2]Tube) {
-	var Xspace, Yspace float32 = 220, 130
-	for i := 0; i < 200; i++ {
+func startTubes(TubePos *[5][2]Tube) {
+
+	for i := 0; i < len(TubePos); i++ {
 		if i == 0 {
 			TubePos[i][0] = Tube{
 				Source:  rl.Rectangle{X: 55, Y: 323, Width: 27, Height: 161},
@@ -24,8 +24,10 @@ func startTubes(TubePos *[200][2]Tube) {
 		TubePos[i][1] = Tube{
 			Source: rl.Rectangle{X: 83, Y: 320, Width: 27, Height: 161},
 			DestRec: rl.Rectangle{
-				X: TubePos[i][0].DestRec.X,
-				Y: TubePos[i][0].DestRec.Y + TubePos[i][0].DestRec.Height + Yspace, Width: 27 * 3, Height: 161 * 3},
+				X:      TubePos[i][0].DestRec.X,
+				Y:      TubePos[i][0].DestRec.Y + TubePos[i][0].DestRec.Height + Yspace,
+				Width:  27 * 3,
+				Height: 161 * 3},
 		}
 	}
 
