@@ -17,7 +17,7 @@ func draw(Game *Game) {
 		rl.Vector2{X: 143 / 2, Y: 255 / 2}, 0, rl.White)               //Origin
 
 	//score
-	rl.DrawText(fmt.Sprintf("%d", Game.Score), 180, 200, 50, rl.White)
+	rl.DrawText(fmt.Sprintf("%d", Score), 180, 200, 50, rl.White)
 	//tubes
 	for i := 0; i < len(Game.TubePos); i++ {
 		for d := 0; d < 2; d++ {

@@ -7,6 +7,7 @@ import (
 )
 
 var bigger int = -1
+var Score int = 0
 
 func tubesCol(Game *Game) {
 
@@ -20,7 +21,9 @@ func tubesCol(Game *Game) {
 				Game.Over = true
 			}
 			if Game.TubePos[i][d].DestRec.X+Game.TubePos[i][d].DestRec.Width < Game.Player.CircleCol.Origin.X+Game.Player.CircleCol.Radios {
+
 				Game.Score = i + 1
+
 			}
 			if Game.TubePos[i][d].DestRec.X+Game.TubePos[i][d].DestRec.Width < 0 {
 				if bigger == -1 {
@@ -38,6 +41,7 @@ func tubesCol(Game *Game) {
 				Game.TubePos[i][1].DestRec.Y = Game.TubePos[i][0].DestRec.Y + Game.TubePos[i][0].DestRec.Height + Yspace
 			}
 		}
+
 	}
 
 }
@@ -91,6 +95,7 @@ func fisica(Game *Game) {
 	tubesCol(Game)
 	if PastScore != Game.Score {
 		PastScore = Game.Score
+		Score++
 		rl.PlaySound(Game.FxScore)
 	}
 	if rl.IsMouseButtonPressed(rl.MouseLeftButton) || rl.IsKeyPressed(rl.KeySpace) {
