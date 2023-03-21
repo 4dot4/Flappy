@@ -17,6 +17,7 @@ func main() {
 	myGame.Player.FxJump = rl.LoadSound("./sounds/sfx_wing.wav")
 	myGame.Player.FxHit = rl.LoadSound("./sounds/sfx_hit.wav")
 	myGame.FxScore = rl.LoadSound("./sounds/sfx_point.wav")
+	myGame.FxOver = rl.LoadSound("./sounds/sfx_die.wav")
 
 	for !rl.WindowShouldClose() {
 

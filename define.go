@@ -51,7 +51,7 @@ type Game struct {
 	Score       int
 	SpriteSheet rl.Texture2D
 
-	FxOver  rl.Music
+	FxOver  rl.Sound
 	FxScore rl.Sound
 	Player  goppy
 	TubePos [5][2]Tube

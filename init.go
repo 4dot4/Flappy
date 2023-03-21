@@ -4,7 +4,7 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func startTubes(TubePos *[5][2]Tube) {
+func startTubes(TubePos *[5][2]Tube, Player *goppy) {
 
 	for i := 0; i < len(TubePos); i++ {
 		if i == 0 {
@@ -30,7 +30,12 @@ func startTubes(TubePos *[5][2]Tube) {
 				Height: 161 * 3},
 		}
 	}
-
+	Player.DestRec = rl.Rectangle{
+		X:      140,
+		Y:      360,
+		Width:  Player.SourceRec.Width * Scale,
+		Height: Player.SourceRec.Height * Scale,
+	}
 }
 func (Game *Game) initGame() {
 
@@ -42,12 +47,7 @@ func (Game *Game) initGame() {
 			Height: 12,
 		},
 	}
-	Game.Player.DestRec = rl.Rectangle{
-		X:      140,
-		Y:      360,
-		Width:  Game.Player.SourceRec.Width * Scale,
-		Height: Game.Player.SourceRec.Height * Scale,
-	}
+	startTubes(&Game.TubePos, &Game.Player)
 	Game.Player.Origin = rl.Vector2{
 		X: Game.Player.DestRec.Width / 2,
 		Y: Game.Player.DestRec.Height / 2,
@@ -71,7 +71,7 @@ func (Game *Game) initGame() {
 		Width:  ScreenWidth,
 		Height: 200,
 	}
-	startTubes(&Game.TubePos)
+
 	Game.Player.FrameSpeed = 8
 	Game.Player.SpeedY = 5
 	Game.Over = false

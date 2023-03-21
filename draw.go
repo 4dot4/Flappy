@@ -17,7 +17,10 @@ func draw(Game *Game) {
 		rl.Vector2{X: 143 / 2, Y: 255 / 2}, 0, rl.White)               //Origin
 
 	//score
-	rl.DrawText(fmt.Sprintf("%d", Score), 180, 200, 50, rl.White)
+	if !Game.Over {
+		rl.DrawText(fmt.Sprintf("%d", Game.Score), 180, 200, 50, rl.White)
+	}
+
 	//tubes
 	for i := 0; i < len(Game.TubePos); i++ {
 		for d := 0; d < 2; d++ {
@@ -28,7 +31,10 @@ func draw(Game *Game) {
 				rl.Vector2{X: 0, Y: 0}, 0, rl.RayWhite)
 		}
 	}
-
+	if Game.Over {
+		rl.DrawText(fmt.Sprintf("%d", Game.Score), 180, 200, 50, rl.Red)
+		rl.DrawText("Press R to restart", 30, 300, 35, rl.White)
+	}
 	//Foreground
 	rl.DrawTexturePro(
 		Game.SpriteSheet,          //texture

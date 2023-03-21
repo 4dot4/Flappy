@@ -7,7 +7,9 @@ import (
 )
 
 var bigger int = -1
-var Score int = 0
+var Start bool = false
+var ySpeed float32 = -1
+var tube int = -1
 
 func tubesCol(Game *Game) {
 
@@ -20,11 +22,17 @@ func tubesCol(Game *Game) {
 				rl.PlaySound(Game.Player.FxHit)
 				Game.Over = true
 			}
-			if Game.TubePos[i][d].DestRec.X+Game.TubePos[i][d].DestRec.Width < Game.Player.CircleCol.Origin.X+Game.Player.CircleCol.Radios {
 
-				Game.Score = i + 1
+			if Game.TubePos[i][d].DestRec.X+Game.TubePos[i][d].DestRec.Width < Game.Player.CircleCol.Origin.X+Game.Player.CircleCol.Radios {
+				if tube != i {
+					rl.PlaySound(Game.FxScore)
+					Game.Score++
+
+					tube = i
+				}
 
 			}
+
 			if Game.TubePos[i][d].DestRec.X+Game.TubePos[i][d].DestRec.Width < 0 {
 				if bigger == -1 {
 					Game.TubePos[i][d].DestRec.X = Game.TubePos[len(Game.TubePos)-1][0].DestRec.X +
@@ -38,12 +46,22 @@ func tubesCol(Game *Game) {
 
 					bigger = i
 				}
+
 				Game.TubePos[i][1].DestRec.Y = Game.TubePos[i][0].DestRec.Y + Game.TubePos[i][0].DestRec.Height + Yspace
 			}
+
 		}
 
 	}
-
+}
+func restart(Game *Game) {
+	Game.Over = false
+	Game.Player.Rotation = 0
+	Start = false
+	Game.Score = 0
+	tube = -1
+	bigger = -1
+	startTubes(&Game.TubePos, &Game.Player)
 }
 func jump(player *goppy) {
 
@@ -66,39 +84,49 @@ func animePlayer(Player *goppy) {
 }
 
 func playerMov(Game *Game) {
-	if Game.Player.CircleCol.Origin.Y+Game.Player.CircleCol.Radios >= Game.Foreground.RecDest.Y {
-		Game.Player.SpeedY = 0
-	} else {
-		Game.Player.SpeedY += Gravity
-	}
-	if Game.Player.SpeedY > 10 {
-		Game.Player.SpeedY = 10
-	}
-	if Game.Player.Rotation >= 85 {
-		Gravity = 0.3
-	} else {
-		Gravity = 0.2
-	}
-	if Game.Player.SpeedY > 5 {
-		if Game.Player.Rotation <= 90 {
-			Game.Player.Rotation += 7
+	if Start {
+		if Game.Player.CircleCol.Origin.Y+Game.Player.CircleCol.Radios >= Game.Foreground.RecDest.Y {
+			
+			Game.Player.SpeedY = 0
+			Game.Over = true
+
+		} else {
+			Game.Player.SpeedY += Gravity
 		}
+		if Game.Player.SpeedY > 10 {
+			Game.Player.SpeedY = 10
+		}
+		if Game.Player.Rotation >= 85 {
+			Gravity = 0.3
+		} else {
+			Gravity = 0.2
+		}
+		if Game.Player.SpeedY > 5 {
+			if Game.Player.Rotation <= 90 {
+				Game.Player.Rotation += 7
+			}
+		} else {
+			if Game.Player.Rotation >= -30 {
+				Game.Player.Rotation -= 10
+			}
+		}
+		Game.Player.DestRec.Y += Game.Player.SpeedY
 	} else {
-		if Game.Player.Rotation >= -30 {
-			Game.Player.Rotation -= 10
+		Game.Player.DestRec.Y += ySpeed
+		if Game.Player.DestRec.Y > 330 {
+			ySpeed = -ySpeed
+		}
+		if Game.Player.DestRec.Y < 390 {
+			ySpeed = -ySpeed
 		}
 	}
-	Game.Player.DestRec.Y += Game.Player.SpeedY
+
 }
 func fisica(Game *Game) {
 
 	tubesCol(Game)
-	if PastScore != Game.Score {
-		PastScore = Game.Score
-		Score++
-		rl.PlaySound(Game.FxScore)
-	}
 	if rl.IsMouseButtonPressed(rl.MouseLeftButton) || rl.IsKeyPressed(rl.KeySpace) {
+		Start = true
 		jump(&Game.Player)
 
 	}
@@ -106,9 +134,8 @@ func fisica(Game *Game) {
 func update(Game *Game) {
 
 	animePlayer(&Game.Player)
-	if !DebugMode {
-		playerMov(Game)
-	}
+
+	playerMov(Game)
 
 	Game.Player.CircleCol.Origin = rl.Vector2{
 		X: Game.Player.DestRec.X - 6,
@@ -120,17 +147,18 @@ func update(Game *Game) {
 		if Game.Foreground.ScrollF <= -Game.Foreground.RecDest.Width {
 			Game.Foreground.ScrollF = 0
 		}
+		if Start {
+			for i := 0; i < len(Game.TubePos); i++ {
+				Game.TubePos[i][0].DestRec.X -= 3
+				Game.TubePos[i][1].DestRec.X = Game.TubePos[i][0].DestRec.X
+			}
 
-		for i := 0; i < len(Game.TubePos); i++ {
-			Game.TubePos[i][0].DestRec.X -= 3
-			Game.TubePos[i][1].DestRec.X = Game.TubePos[i][0].DestRec.X
 		}
 		fisica(Game)
 	}
 
-	if rl.IsKeyDown(rl.KeyDown) {
-
-		Game.Player.DestRec.Y += 5
+	if rl.IsKeyDown(rl.KeyR) {
+		restart(Game)
 	}
 	if rl.IsKeyDown(rl.KeyUp) {
 		Game.Player.DestRec.Y -= 5
