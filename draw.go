@@ -68,8 +68,15 @@ func draw(Game *Game) {
 		rl.White)
 	// rl.DrawCircleLines(int32(Game.Player.CircleCol.Origin.X), int32(Game.Player.CircleCol.Origin.Y), Game.Player.CircleCol.Radios, rl.Red) //physics
 	// rl.DrawCircle(int32(Game.Player.CircleCol.Origin.X), int32(Game.Player.CircleCol.Origin.Y), 5, rl.Red)
+	if !Start {
+		rl.DrawText("press F to show FPS", 10, 20, 15, rl.White)
+	}
+	if ShowFPS {
 
-	// rl.DrawFPS(300, 20)
+		rl.DrawFPS(300, 20)
+
+	}
+
 	// rl.DrawText(fmt.Sprintf("Velocity: %f \nGravity:%f", Game.Player.SpeedY, Gravity), 10, 60, 20, rl.Red)
 	rl.EndDrawing()
 }

@@ -18,6 +18,7 @@ const (
 var Gravity float32
 var DebugMode bool
 var PastScore int = 0
+var ShowFPS bool = false
 
 type Circle struct {
 	Origin rl.Vector2

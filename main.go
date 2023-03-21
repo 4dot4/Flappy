@@ -28,6 +28,7 @@ func main() {
 	rl.UnloadSound(myGame.Player.FxJump)
 	rl.UnloadSound(myGame.Player.FxHit)
 	rl.UnloadSound(myGame.FxScore)
+	rl.UnloadSound(myGame.FxOver)
 	rl.CloseAudioDevice()
 	rl.CloseWindow()
 }

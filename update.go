@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -166,26 +164,13 @@ func update(Game *Game) {
 	if rl.IsKeyDown(rl.KeyR) {
 		restart(Game)
 	}
-	if rl.IsKeyDown(rl.KeyUp) {
-		Game.Player.DestRec.Y -= 5
-	}
-	if rl.IsKeyDown(rl.KeyRight) {
-		Game.Player.DestRec.X += 5
-	}
-	if rl.IsKeyDown(rl.KeyLeft) {
-		Game.Player.DestRec.X -= 5
-	}
-	if rl.IsKeyPressed(rl.KeyZ) {
-		Game.Player.CircleCol.Radios += 1
-		fmt.Println(Game.Player.CircleCol.Radios)
-	}
-	if rl.IsKeyPressed(rl.KeyX) {
-		Game.Player.CircleCol.Radios -= 1
-		fmt.Println(Game.Player.CircleCol.Radios)
-	}
-	if rl.IsKeyDown(rl.KeyT) {
-		DebugMode = true
+	if rl.IsKeyPressed(rl.KeyF) {
+
+		if ShowFPS {
+			ShowFPS = false
+		} else {
+			ShowFPS = true
+		}
 
 	}
-
 }
