@@ -10,6 +10,7 @@ var bigger int = -1
 var Start bool = false
 var ySpeed float32 = -1
 var tube int = -1
+var OverTest = false
 
 func tubesCol(Game *Game) {
 
@@ -56,6 +57,7 @@ func tubesCol(Game *Game) {
 }
 func restart(Game *Game) {
 	Game.Over = false
+	OverTest = false
 	Game.Player.Rotation = 0
 	Start = false
 	Game.Score = 0
@@ -86,8 +88,12 @@ func animePlayer(Player *goppy) {
 func playerMov(Game *Game) {
 	if Start {
 		if Game.Player.CircleCol.Origin.Y+Game.Player.CircleCol.Radios >= Game.Foreground.RecDest.Y {
-			
+
 			Game.Player.SpeedY = 0
+			if !OverTest {
+				rl.PlaySound(Game.FxOver)
+				OverTest = true
+			}
 			Game.Over = true
 
 		} else {
