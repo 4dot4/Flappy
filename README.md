@@ -16,15 +16,15 @@ To install and run the game, you need to have Golang and Raylib installed on you
 
 1. Clone the repository to your local machine
 
-git clone https://github.com/4dot4/Flappy
+```git clone https://github.com/4dot4/Flappy```
 
 2. Navigate to the project directory
 
-cd flappy
+```cd flappy```
 
 3. Run the game
 
-go run . 
+```go run . ```
 
 ## Dependencies
 
