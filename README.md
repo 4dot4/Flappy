@@ -6,9 +6,9 @@ This is a Flappy Bird game built with Golang and Raylib. The game is a tribute t
 
 ## How to Play
 
-To play the game, simply press the space bar to make the bird flap its wings and fly. Your goal is to navigate the bird through the obstacles without hitting any of them. Each time you successfully pass through an obstacle, you earn a point.
+To play the game, simply press the space bar or left click to make the bird flap its wings and fly. Your goal is to navigate the bird through the obstacles without hitting any of them. Each time you successfully pass through an obstacle, you earn a point.
 
-If you hit an obstacle, the game is over, and you can start again by pressing the space bar.
+If you hit an obstacle, the game is over, and you can start again by pressing R.
 
 ## Installation
 
