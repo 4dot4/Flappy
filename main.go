@@ -8,7 +8,7 @@ func main() {
 
 	var myGame Game
 
-	rl.InitWindow(ScreenWidth, ScreenHeight, "flappy")
+	rl.InitWindow(ScreenWidth, ScreenHeight, "Flappy")
 	rl.InitAudioDevice()
 	rl.SetTargetFPS(60)
 
