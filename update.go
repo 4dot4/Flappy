@@ -66,6 +66,7 @@ func restart(Game *Game) {
 func jump(player *goppy) {
 
 	rl.PlaySound(player.FxJump)
+
 	player.SpeedY = 0
 	player.SpeedY -= 5.5
 
