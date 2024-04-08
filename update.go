@@ -132,7 +132,9 @@ func fisica(Game *Game) {
 	tubesCol(Game)
 	if rl.IsMouseButtonPressed(rl.MouseLeftButton) || rl.IsKeyPressed(rl.KeySpace) {
 		Start = true
-		jump(&Game.Player)
+		if Game.Player.DestRec.Y > 0 {
+			jump(&Game.Player)
+		}
 
 	}
 }
